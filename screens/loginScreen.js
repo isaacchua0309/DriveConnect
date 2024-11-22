@@ -5,11 +5,27 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase"; // Import Firebase auth from your firebase.js file
 
 export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState(""); // State for email
+  const [password, setPassword] = useState(""); // State for password
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleLogin = async () => {
+    try {
+      // Firebase login with email and password
+      await signInWithEmailAndPassword(auth, email, password);
+      Alert.alert("Login Successful", "Welcome back!");
+      navigation.navigate("HomeScreen"); // Redirect to HomeScreen on successful login
+    } catch (error) {
+      Alert.alert("Login Failed", error.message); // Show error message
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -25,18 +41,19 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeTitle}>Welcome</Text>
         <Text style={styles.welcomeSubtitle}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Please log in to continue.
         </Text>
       </View>
 
       {/* Input Fields */}
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Email or Mobile Number</Text>
+        <Text style={styles.inputLabel}>Email</Text>
         <TextInput
           style={styles.input}
           placeholder="example@example.com"
           placeholderTextColor="#A5D8FF"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
         />
 
         <Text style={styles.inputLabel}>Password</Text>
@@ -46,6 +63,8 @@ export default function LoginScreen({ navigation }) {
             placeholder="***********"
             placeholderTextColor="#A5D8FF"
             secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
           />
           <TouchableOpacity
             style={styles.eyeIcon}
@@ -64,10 +83,7 @@ export default function LoginScreen({ navigation }) {
       </View>
 
       {/* Log In Button */}
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => navigation.navigate("HomeScreen")}
-      >
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
 

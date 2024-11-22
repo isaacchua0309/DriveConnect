@@ -4,8 +4,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 export default function StartScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Skin Firts</Text>
-      <Text style={styles.subtitle}>Your trusted Dermatology Center</Text>
+      <Text style={styles.title}>Welcome to DriveConnect</Text>
+      <Text style={styles.subtitle}>Connecting instructors and students seemlessly</Text>
 
       {/* Log In Button */}
       <TouchableOpacity
